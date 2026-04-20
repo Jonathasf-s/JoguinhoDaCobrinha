@@ -6,6 +6,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class JogoCobrinha extends JPanel implements ActionListener {
 
@@ -22,6 +23,9 @@ public class JogoCobrinha extends JPanel implements ActionListener {
 
         private Direction direction = Direction.RIGHT;
         private Direction newDirection = Direction.RIGHT;
+
+        private GamePoints food;
+        private final Random random = new Random();
 
 
 
@@ -75,13 +79,13 @@ public class JogoCobrinha extends JPanel implements ActionListener {
 
                 case KeyEvent.VK_D:
                     if (direction != Direction.RIGHT){
-                        newDirection= Direction.LEFT;
+                        newDirection= Direction.RIGHT;
                     }
                     break;
 
                 case KeyEvent.VK_A:
                     if (direction != Direction.LEFT){
-                        newDirection = Direction.RIGHT;
+                        newDirection = Direction.LEFT;
                     }
                     break;
             }
@@ -92,6 +96,14 @@ public class JogoCobrinha extends JPanel implements ActionListener {
     private void resetGameData(){
         cobra.clear();
         cobra.add(new GamePoints(width/2, height/2));
+        generateFood();
+    }
+
+    private void generateFood(){
+        do {
+            food = new GamePoints(random.nextInt(width/TamanhoDaCelula)* TamanhoDaCelula,
+                    random.nextInt(height/TamanhoDaCelula)*TamanhoDaCelula);
+        } while (cobra.contains(food));
     }
 
     @Override
@@ -105,6 +117,8 @@ public class JogoCobrinha extends JPanel implements ActionListener {
             g.setFont(g.getFont().deriveFont(30F));
             g.drawString("COBRINHA", 400, 200); // escreve uma mensagem como elemento grafico
         } else {
+            g.setColor(Color.red);
+            g.fillRect(food.x , food.y, TamanhoDaCelula , TamanhoDaCelula);
             g.setColor(Color.GREEN);
             for (final var point : cobra){
                 g.fillRect(point.x, point.y, TamanhoDaCelula, TamanhoDaCelula );
@@ -126,8 +140,12 @@ public class JogoCobrinha extends JPanel implements ActionListener {
         };
         cobra.addFirst(novaCabeca);
 
+        if (novaCabeca.equals(food)){
+            generateFood();
+        }
 
-        if (isCollision()){
+
+        else if (isCollision()){
             gameOver = true;
             cobra.removeFirst();
         }else {
