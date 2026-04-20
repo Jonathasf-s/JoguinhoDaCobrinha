@@ -62,19 +62,27 @@ public class JogoCobrinha extends JPanel implements ActionListener {
         } else if (!gameOver) {
             switch (keyCode){
                 case KeyEvent.VK_W:
-                    newDirection = Direction.UP;
+                    if (direction != Direction.DOWN){
+                        newDirection= Direction.UP;
+                    }
                     break;
 
                 case KeyEvent.VK_S:
-                    newDirection = Direction.DOWN;
+                    if (direction != Direction.UP){
+                        newDirection = Direction.DOWN;
+                    }
                     break;
 
                 case KeyEvent.VK_D:
-                    newDirection = Direction.RIGHT;
+                    if (direction != Direction.RIGHT){
+                        newDirection= Direction.LEFT;
+                    }
                     break;
 
                 case KeyEvent.VK_A:
-                    newDirection = Direction.LEFT;
+                    if (direction != Direction.LEFT){
+                        newDirection = Direction.RIGHT;
+                    }
                     break;
             }
 
