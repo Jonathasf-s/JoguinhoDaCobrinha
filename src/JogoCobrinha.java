@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -90,6 +91,10 @@ public class JogoCobrinha extends JPanel implements ActionListener {
                     break;
             }
 
+        } else if (keyCode == KeyEvent.VK_SPACE){
+            inicioDoJogo = false;
+            gameOver = false;
+            resetGameData();
         }
     }
 
@@ -123,6 +128,8 @@ public class JogoCobrinha extends JPanel implements ActionListener {
             for (final var point : cobra){
                 g.fillRect(point.x, point.y, TamanhoDaCelula, TamanhoDaCelula );
             }
+
+
         }
     }
 
@@ -162,7 +169,7 @@ public class JogoCobrinha extends JPanel implements ActionListener {
         if (invalidWidth || invalidHeight){
             return true;
         }else{
-            return false;
+            return cobra.size() != new HashSet<>(cobra).size();
         }
     }
 
